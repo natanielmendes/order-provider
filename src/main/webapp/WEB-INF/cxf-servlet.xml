@@ -14,9 +14,16 @@
 
        <!-- CXF -->
        <bean id="cors-filter" class="org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter"/>
+       <bean id="depthProperties" class="org.apache.cxf.staxutils.DocumentDepthProperties">
+              <property name="innerElementCountThreshold" value="500" />
+       </bean>
+       <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+              <property name="depthProperties" ref="depthProperties" />
+       </bean>
        <cxf:rsServer id="user" address="/user" serviceClass="com.nataniel.api.UserServiceRest">
               <cxf:providers>
                      <ref bean="cors-filter" />
+                     <ref bean="jsonProvider" />
               </cxf:providers>
        </cxf:rsServer>
 

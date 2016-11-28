@@ -11,7 +11,28 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="USER")
+@NamedQueries({
+        @NamedQuery(name = User.Queries.FIND_USER_BY_LOGIN_AND_PASSWORD,
+                query =
+                        "select new com.nataniel.api.domain.User(" +
+                                " u.id," +
+                                " u.login," +
+                                " u.name," +
+                                " u.email," +
+                                " u.password," +
+                                " u.city," +
+                                " u.region," +
+                                " u.birthDate)" +
+                                " from User u " +
+                                " where u.login = :login and u.password = :password"
+        )
+})
 public class User {
+
+    public static final class Queries {
+        public static final String FIND_USER_BY_LOGIN_AND_PASSWORD = "FIND_USER_BY_LOGIN_AND_PASSWORD";
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -40,7 +61,8 @@ public class User {
     public User() {
     }
 
-    public User(String login, String name, String email, String password, String city, String region, String birthDate) {
+    public User(Long id, String login, String name, String email, String password, String city, String region, String birthDate) {
+        this.id = id;
         this.login = login;
         this.name = name;
         this.email = email;

@@ -32,5 +32,9 @@ public class MailServiceRouteBuilder extends RouteBuilder {
 		from("direct:createUser")
 				.process(jsonRequestProcessor)
 				.to("class:com.nataniel.api.services.UserService?method=createUser(*)");
+
+		from("direct:login")
+				.process(jsonRequestProcessor)
+				.to("class:com.nataniel.api.services.UserService?method=login(*)");
 	}
 }

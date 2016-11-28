@@ -1,7 +1,6 @@
 package com.nataniel.api;
 
 import org.apache.cxf.rs.security.cors.CrossOriginResourceSharing;
-
 import javax.ws.rs.*;
 
 /**
@@ -20,6 +19,13 @@ public class UserServiceRest {
     @Path("/")
     @Produces("application/json")
     public String createUser() {
+        return null;
+    }
+
+    @GET
+    @Path("/login")
+    @Produces("application/json")
+    public String login() {
         return null;
     }
 }
