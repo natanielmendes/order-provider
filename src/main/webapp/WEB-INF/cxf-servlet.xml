@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://camel.apache.org/schema/spring
+              http://camel.apache.org/schema/spring/camel-spring.xsd
+              http://camel.apache.org/schema/cxf
+              http://camel.apache.org/schema/cxf/camel-cxf.xsd
+              http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context.xsd">
+
+       <!-- CXF -->
+       <bean id="cors-filter" class="org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter"/>
+       <cxf:rsServer id="user" address="/user" serviceClass="com.nataniel.api.UserServiceRest">
+              <cxf:providers>
+                     <ref bean="cors-filter" />
+              </cxf:providers>
+       </cxf:rsServer>
+
+       <bean id="userService" class="com.nataniel.api.services.UserService"/>
+
+       <context:component-scan base-package="com.nataniel"/>
+
+       <!-- Camel -->
+       <bean id="routeBuilder" class="com.nataniel.api.camel.MailServiceRouteBuilder"/>
+       <camelContext xmlns="http://camel.apache.org/schema/spring">
+              <routeBuilder ref="routeBuilder"/>
+       </camelContext>
+
+       <!-- Persistence -->
+       <bean id="mysqlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+              <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+              <property name="url" value="jdbc:mysql://192.168.0.140:3306/service-provider"/>
+              <property name="username" value="root"/>
+              <property name="password" value="123"/>
+       </bean>
+
+       <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+              <property name="dataSource" ref="mysqlDataSource"/>
+              <property name="jpaVendorAdapter">
+                     <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                            <property name="showSql" value="true"/>
+                            <property name="generateDdl" value="true" />
+                            <property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+                     </bean>
+              </property>
+       </bean>
+</beans>
