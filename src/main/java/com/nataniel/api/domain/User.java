@@ -22,15 +22,55 @@ import javax.persistence.*;
                                 " u.password," +
                                 " u.city," +
                                 " u.region," +
-                                " u.birthDate)" +
+                                " u.birthDate," +
+                                " u.job," +
+                                " u.course," +
+                                " u.university," +
+                                " u.workSince)" +
                                 " from User u " +
                                 " where u.login = :login and u.password = :password"
+        ),
+        @NamedQuery(name = User.Queries.FIND_USER_BY_USERID,
+                query =
+                        "select new com.nataniel.api.domain.User(" +
+                                " u.id," +
+                                " u.login," +
+                                " u.name," +
+                                " u.email," +
+                                " u.password," +
+                                " u.city," +
+                                " u.region," +
+                                " u.birthDate," +
+                                " u.job," +
+                                " u.course," +
+                                " u.university," +
+                                " u.workSince)" +
+                                " from User u " +
+                                " where u.id IN :userIds"
+                ),
+        @NamedQuery(name = User.Queries.FIND_ALL_USERS,
+        query =
+                "select new com.nataniel.api.domain.User(" +
+                        " u.id," +
+                        " u.login," +
+                        " u.name," +
+                        " u.email," +
+                        " u.city," +
+                        " u.region," +
+                        " u.birthDate," +
+                        " u.job," +
+                        " u.course," +
+                        " u.university," +
+                        " u.workSince)" +
+                        " from User u "
         )
 })
 public class User {
 
     public static final class Queries {
         public static final String FIND_USER_BY_LOGIN_AND_PASSWORD = "FIND_USER_BY_LOGIN_AND_PASSWORD";
+        public static final String FIND_USER_BY_USERID = "FIND_USER_BY_USERID";
+        public static final String FIND_ALL_USERS = "FIND_ALL_USERS";
     }
 
     @Id
@@ -58,10 +98,22 @@ public class User {
     @Column(name = "BIRTHDATE")
     private String birthDate;
 
+    @Column(name = "JOB")
+    private String job;
+
+    @Column(name = "COURSE")
+    private String course;
+
+    @Column(name = "UNIVERSITY")
+    private String university;
+
+    @Column(name = "WORK_SINCE")
+    private String workSince;
+
     public User() {
     }
 
-    public User(Long id, String login, String name, String email, String password, String city, String region, String birthDate) {
+    public User(Long id, String login, String name, String email, String password, String city, String region, String birthDate, String job, String course, String university, String workSince) {
         this.id = id;
         this.login = login;
         this.name = name;
@@ -70,6 +122,24 @@ public class User {
         this.city = city;
         this.region = region;
         this.birthDate = birthDate;
+        this.job = job;
+        this.course = course;
+        this.university = university;
+        this.workSince = workSince;
+    }
+
+    public User(Long id, String login, String name, String email, String city, String region, String birthDate, String job, String course, String university, String workSince) {
+        this.id = id;
+        this.login = login;
+        this.name = name;
+        this.email = email;
+        this.city = city;
+        this.region = region;
+        this.birthDate = birthDate;
+        this.job = job;
+        this.course = course;
+        this.university = university;
+        this.workSince = workSince;
     }
 
     public Long getId() {
@@ -134,5 +204,37 @@ public class User {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public String getWorkSince() {
+        return workSince;
+    }
+
+    public void setWorkSince(String workSince) {
+        this.workSince = workSince;
     }
 }

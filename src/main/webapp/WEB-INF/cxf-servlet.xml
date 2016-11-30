@@ -20,14 +20,39 @@
        <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
               <property name="depthProperties" ref="depthProperties" />
        </bean>
-       <cxf:rsServer id="user" address="/user" serviceClass="com.nataniel.api.UserServiceRest">
+
+       <!--Services-->
+       <cxf:rsServer id="user" address="/user" serviceClass="com.nataniel.api.services.UserServiceRest">
               <cxf:providers>
                      <ref bean="cors-filter" />
                      <ref bean="jsonProvider" />
               </cxf:providers>
        </cxf:rsServer>
-
        <bean id="userService" class="com.nataniel.api.services.UserService"/>
+
+       <cxf:rsServer id="rate" address="/rate" serviceClass="com.nataniel.api.services.RateServiceRest">
+              <cxf:providers>
+                     <ref bean="cors-filter" />
+                     <ref bean="jsonProvider" />
+              </cxf:providers>
+       </cxf:rsServer>
+       <bean id="rateService" class="com.nataniel.api.services.RateService"/>
+
+       <cxf:rsServer id="message" address="/message" serviceClass="com.nataniel.api.services.MessageServiceRest">
+              <cxf:providers>
+                     <ref bean="cors-filter" />
+                     <ref bean="jsonProvider" />
+              </cxf:providers>
+       </cxf:rsServer>
+       <bean id="messageService" class="com.nataniel.api.services.MessageService"/>
+
+       <cxf:rsServer id="friend" address="/friend" serviceClass="com.nataniel.api.services.FriendServiceRest">
+              <cxf:providers>
+                     <ref bean="cors-filter" />
+                     <ref bean="jsonProvider" />
+              </cxf:providers>
+       </cxf:rsServer>
+       <bean id="friendService" class="com.nataniel.api.services.FriendService"/>
 
        <context:component-scan base-package="com.nataniel"/>
 

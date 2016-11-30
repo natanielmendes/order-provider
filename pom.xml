@@ -116,21 +116,21 @@
       <artifactId>hibernate-validator</artifactId>
       <version>5.0.2.Final</version>
     </dependency>
-      <dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-entitymanager</artifactId>
-          <version>3.6.9.Final</version>
-          <exclusions>
-              <exclusion>
-                  <groupId>cglib</groupId>
-                  <artifactId>cglib</artifactId>
-              </exclusion>
-              <exclusion>
-                  <groupId>dom4j</groupId>
-                  <artifactId>dom4j</artifactId>
-              </exclusion>
-          </exclusions>
-      </dependency>
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <version>3.6.9.Final</version>
+        <exclusions>
+            <exclusion>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
       <dependency>
         <groupId>org.json</groupId>
         <artifactId>json</artifactId>
