@@ -7,39 +7,32 @@ import javax.ws.rs.*;
  * Created by natan on 16/11/2016.
  */
 @CrossOriginResourceSharing(allowAllOrigins = true, allowHeaders = {"POST", "PUT", "GET", "OPTIONS", "DELETE"})
-public class UserServiceRest {
+public class ProductOrderServiceRest {
     @GET
     @Path("/")
     @Produces("application/json")
-    public String getAllUsers() {
+    public String getAllOrders() {
         return null;
     }
 
     @GET
-    @Path("/{userId}")
+    @Path("/filterByControlNumber/")
     @Produces("application/json")
-    public String getUserById(@PathParam("userId") Long userId) {
+    public String getOrderByControlNumber(@QueryParam("controlNumber") String controlNumber) {
         return null;
     }
 
-    @PUT
-    @Path("/")
+    @GET
+    @Path("/filterByDate/")
     @Produces("application/json")
-    public String updateUserById() {
+    public String getOrderByRegistrationDate(@QueryParam("registrationDate") String registrationDate) {
         return null;
     }
 
     @POST
     @Path("/")
     @Produces("application/json")
-    public String createUser() {
-        return null;
-    }
-
-    @GET
-    @Path("/login")
-    @Produces("application/json")
-    public String login() {
+    public String createProductOrder() {
         return null;
     }
 }

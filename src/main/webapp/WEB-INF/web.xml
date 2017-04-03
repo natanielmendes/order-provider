@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
          http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <display-name>service-provider</display-name>
+    <display-name>order-provider</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -18,9 +18,9 @@
     </listener>
 
     <servlet>
-        <servlet-name>email</servlet-name>
-        <display-name>service-provider</display-name>
-        <description>Services Provider Endpoints</description>
+        <servlet-name>order</servlet-name>
+        <display-name>order-provider</display-name>
+        <description>Orders Provider Endpoints</description>
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
         <init-param>
             <param-name>jaxrs.providers</param-name>
@@ -38,7 +38,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>email</servlet-name>
+        <servlet-name>order</servlet-name>
         <!--<url-pattern>/services/*</url-pattern>-->
         <url-pattern>/*</url-pattern>
     </servlet-mapping>

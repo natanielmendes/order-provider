@@ -1,11 +1,15 @@
 package com.nataniel.api.camel;
 
+import com.nataniel.api.BadRequestException;
 import com.nataniel.api.JsonRequestProcessor;
+import javassist.NotFoundException;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.cxf.common.i18n.Exception;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.ws.rs.core.Response;
 
 public class MailServiceRouteBuilder extends RouteBuilder {
 
@@ -14,14 +18,31 @@ public class MailServiceRouteBuilder extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-		configureUserService();
-		configureRateService();
-		configureMessageService();
-		configureFriendsService();
+		onException(BadRequestException.class).handled(true).process(new Processor() {
+			@Override
+			public void process(Exchange exchange) throws Exception {
+				Throwable caused = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Throwable.class);
+				Response response = Response.status(400).entity("{\"error\":\"" + caused.getMessage() + "\"}").build();
+				exchange.getOut().setBody(response);
+				exchange.setProperty(Exchange.ROUTE_STOP, Boolean.TRUE);
+			}
+		});
+
+		onException(NotFoundException.class).handled(true).process(new Processor() {
+			@Override
+			public void process(Exchange exchange) throws Exception {
+				Throwable caused = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Throwable.class);
+				Response r = Response.status(404).entity("{\"error\":\"" + caused.getMessage() + "\"}").build();
+				exchange.getOut().setBody(r);
+				exchange.setProperty(Exchange.ROUTE_STOP, Boolean.TRUE);
+			}
+		});
+
+		configureOrderService();
 	}
 
-	void configureUserService() {
-		from("cxfrs:bean:user")
+	void configureOrderService() {
+		from("cxfrs:bean:productOrder")
 				.recipientList(simple("direct:${header.operationName}")).process(new Processor() {
 			@Override
 			public void process(Exchange exchange) throws Exception {
@@ -29,70 +50,17 @@ public class MailServiceRouteBuilder extends RouteBuilder {
 			}
 		});
 
-		from("direct:createUser")
+		from("direct:createProductOrder")
 				.process(jsonRequestProcessor)
-				.to("class:com.nataniel.api.services.UserService?method=createUser(*)");
+				.to("class:com.nataniel.api.services.ProductOrderService?method=createProductOrder(*)");
 
-		from("direct:login")
-				.process(jsonRequestProcessor)
-				.to("class:com.nataniel.api.services.UserService?method=login(*)");
+		from("direct:getAllOrders")
+				.to("bean:productOrderService?method=getAllOrders()");
 
-		from("direct:getAllUsers")
-				.to("bean:userService?method=getAllUsers()");
+		from("direct:getOrderByControlNumber")
+				.to("bean:productOrderService?method=getOrderByControlNumber()");
 
-		from("direct:getUserById")
-				.to("bean:userService?method=getUserById(${header.userId})");
-
-		from("direct:updateUserById")
-				.process(jsonRequestProcessor)
-				.to("bean:userService?method=updateUserById(*)");
-	}
-
-	void configureRateService() {
-		from("cxfrs:bean:rate")
-				.recipientList(simple("direct:${header.operationName}")).process(new Processor() {
-			@Override
-			public void process(Exchange exchange) throws Exception {
-				exchange.getIn().removeHeader("Content-Length");
-			}
-		});
-
-		from("direct:rateUser")
-				.process(jsonRequestProcessor)
-				.to("class:com.nataniel.api.services.RateService?method=rateUser(*)");
-
-		from("direct:getRate")
-				.to("class:com.nataniel.api.services.RateService?method=getRate(${header.userIdTo})");
-	}
-
-	void configureMessageService() {
-		from("cxfrs:bean:message")
-				.recipientList(simple("direct:${header.operationName}")).process(new Processor() {
-			@Override
-			public void process(Exchange exchange) throws Exception {
-				exchange.getIn().removeHeader("Content-Length");
-			}
-		});
-
-		from("direct:postMessage")
-				.process(jsonRequestProcessor)
-				.to("class:com.nataniel.api.services.MessageService?method=postMessage(*)");
-
-		from("direct:getMessages")
-				.process(jsonRequestProcessor)
-				.to("bean:messageService?method=getMessages(*)");
-	}
-
-	void configureFriendsService() {
-		from("cxfrs:bean:friend")
-				.recipientList(simple("direct:${header.operationName}")).process(new Processor() {
-			@Override
-			public void process(Exchange exchange) throws Exception {
-				exchange.getIn().removeHeader("Content-Length");
-			}
-		});
-
-		from("direct:getFriends")
-				.to("bean:friendService?method=getFriends(${header.userIdFrom})");
+		from("direct:getOrderByRegistrationDate")
+				.to("bean:productOrderService?method=getOrderByRegistrationDate()");
 	}
 }

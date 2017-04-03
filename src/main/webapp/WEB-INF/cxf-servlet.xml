@@ -22,37 +22,13 @@
        </bean>
 
        <!--Services-->
-       <cxf:rsServer id="user" address="/user" serviceClass="com.nataniel.api.services.UserServiceRest">
+       <cxf:rsServer id="productOrder" address="/productOrder" serviceClass="com.nataniel.api.services.ProductOrderServiceRest">
               <cxf:providers>
                      <ref bean="cors-filter" />
                      <ref bean="jsonProvider" />
               </cxf:providers>
        </cxf:rsServer>
-       <bean id="userService" class="com.nataniel.api.services.UserService"/>
-
-       <cxf:rsServer id="rate" address="/rate" serviceClass="com.nataniel.api.services.RateServiceRest">
-              <cxf:providers>
-                     <ref bean="cors-filter" />
-                     <ref bean="jsonProvider" />
-              </cxf:providers>
-       </cxf:rsServer>
-       <bean id="rateService" class="com.nataniel.api.services.RateService"/>
-
-       <cxf:rsServer id="message" address="/message" serviceClass="com.nataniel.api.services.MessageServiceRest">
-              <cxf:providers>
-                     <ref bean="cors-filter" />
-                     <ref bean="jsonProvider" />
-              </cxf:providers>
-       </cxf:rsServer>
-       <bean id="messageService" class="com.nataniel.api.services.MessageService"/>
-
-       <cxf:rsServer id="friend" address="/friend" serviceClass="com.nataniel.api.services.FriendServiceRest">
-              <cxf:providers>
-                     <ref bean="cors-filter" />
-                     <ref bean="jsonProvider" />
-              </cxf:providers>
-       </cxf:rsServer>
-       <bean id="friendService" class="com.nataniel.api.services.FriendService"/>
+       <bean id="productOrderService" class="com.nataniel.api.services.ProductOrderService"/>
 
        <context:component-scan base-package="com.nataniel"/>
 
@@ -65,7 +41,7 @@
        <!-- Persistence -->
        <bean id="mysqlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
               <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-              <property name="url" value="jdbc:mysql://192.168.0.140:3306/service-provider"/>
+              <property name="url" value="jdbc:mysql://192.168.0.140:3306/productOrder-provider"/>
               <property name="username" value="root"/>
               <property name="password" value="123"/>
        </bean>

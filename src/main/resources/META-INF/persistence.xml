@@ -2,13 +2,13 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
              version="1.0">
-    <persistence-unit name="service-provider">
+    <persistence-unit name="order-provider">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <class>com.nataniel.api.domain.User</class>
+        <class>com.nataniel.api.domain.ProductOrder</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.0.140/service-provider" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/order-provider" />
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="123" />
 
